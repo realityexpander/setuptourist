@@ -34,7 +34,7 @@ app.post('/creators', async (req, res) => {
   if (channelData.channelName !== undefined) {
     creators.push(channelData)
   }
-  res.send('success') 
+  res.send(channelData) 
 })
 
 app.listen(port, () => {

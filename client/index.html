@@ -26,32 +26,40 @@
     async function submitChannel() {
       const channelName = document.querySelector('.channel-input').value;
       // send to server
-      await fetch('http://localhost:3000/creators', {
+      const res = await fetch('http://localhost:3000/creators', {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({channelName})
       })
+      let newCreator = await res.json()
 
-      loadCreators()
+      console.log({newCreator})
+      addCreator(newCreator)
     }
 
     async function loadCreators() {
-      const res = await fetch('http:localhost:3000/creators')
+      const res = await fetch('http://localhost:3000/creators', { method: 'GET'})
       const creators = await res.json()
 
       // render creators
       const container = document.querySelector('.container')
       container.innerHTML=''
       creators.forEach( creator => {
-        const card = newEl('div', {class: 'card'})
-        const title = newEl('h4', {innerText: creator.channelName})
-        const img = newEl('img', {src: creator.avatarURL})
-        card.appendChild(title)
-        card.appendChild(img)
-        container.appendChild(card)
+        addCreator(creator)
       })
+    }
+
+    function addCreator(creator) {
+      const container = document.querySelector('.container')
+
+      const card = newEl('div', {class: 'card'})
+      const title = newEl('h4', {innerText: creator.channelName})
+      const img = newEl('img', {src: creator.avatarURL})
+      card.appendChild(title)
+      card.appendChild(img)
+      container.appendChild(card)
     }
 
     function newEl(type, attrs={}) {
