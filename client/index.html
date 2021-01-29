@@ -27,19 +27,24 @@
     ]
 
     const ctr = document.querySelector('.container')
-    const card = newEl('div', {class: 'card'})
-    ctr.appendChild(card)
+    creators.forEach( creator => {
+      const card = newEl('div', {class: 'card'})
+      const title = newEl('h4', {innetText: creator.name})
+      const img = newEl('img', {src: creator.img})
+      card.appendChild(title)
+      card.appendChild(img)
+      ctr.appendChild(card)
+    })
   </script>
 
   <style>
     .container {
       display: flex;
-      background-color: orange;
     }
     .card {
-      margin: 20px;
+      margin: 5px;
       padding: 20px;
-      background-color: blue;
+      background-color: white;
     }
   </style>
   
