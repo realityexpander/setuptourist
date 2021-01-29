@@ -7,9 +7,9 @@ const bodyParser = require('body-parser');
 
 // const creators = []
 const creators = [
-  {channelName: 'Code Drip', avatarURL: 'https://'},
-  {channelName: 'Dave Lee', avatarURL: 'https://'},
-  {channelName: 'MKBHD', avatarURL: 'https://'},
+  {channelName: 'Code Drip', avatarURL: 'https://yt3.ggpht.com/ytc/AAUvwnhtuLAm0s8db-mA2fuTOBqrlWxWCJeJDZEc0bcONw=s88-c-k-c0x00ffffff-no-rj'},
+  {channelName: 'Nomad Capitalist', avatarURL: 'https://yt3.ggpht.com/ytc/AAUvwnhNnD05AILoIUArgd1ZHUpaNeEU27V8-h7lN7bq=s88-c-k-c0x00ffffff-no-rj'},
+  {channelName: 'RT', avatarURL: 'https://yt3.ggpht.com/ytc/AAUvwnijYqNxgVUKWqoGcecybqhx7rkYODHYyS0so06S4A=s88-c-k-c0x00ffffff-no-rj'},
 ]
 
 app.use(bodyParser.json())
