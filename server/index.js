@@ -5,12 +5,12 @@ const port = 3000
 
 const bodyParser = require('body-parser');
 
-const creators = []
-// const creators = [
-//   {name: 'Code Drip', img: 'https://'},
-//   {name: 'Dave Lee', img: 'https://'},
-//   {name: 'MKBHD', img: 'https://'},
-// ]
+// const creators = []
+const creators = [
+  {channelName: 'Code Drip', avatarURL: 'https://'},
+  {channelName: 'Dave Lee', avatarURL: 'https://'},
+  {channelName: 'MKBHD', avatarURL: 'https://'},
+]
 
 app.use(bodyParser.json())
 app.use(function(req, res, next){
@@ -28,11 +28,14 @@ app.post('/creators', async (req, res) => {
   console.log("request:", req.body)
   // scrape channel
   const channelData = await scrapers.scrapeChannel(req.body.channelName)
-  // add to db
-  creators.push(channelData)
-  res.send('success')
+
+  // add to db   
+  if (channelData.channelName !== undefined) {
+    creators.push(channelData)
+  }
+  res.send('success') 
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Youtube Scraper app listening at http://localhost:${port}`)
 })

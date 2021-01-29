@@ -9,7 +9,7 @@
   <h1>Setup Tourist</h1>
 
   <h4>Add a new creator</h4>
-  <input class="channel-input" type="text" placeholder="paste Youtube url"/>
+  <input class="channel-input" type="text" placeholder="paste Youtube channel name"/>
   <button 
     type="submit"
     onClick="submitChannel()"
@@ -20,16 +20,18 @@
   <div class="container"></div>
 
   <script>
-    function submitChannel() {
+    async function submitChannel() {
       const channelName = document.querySelector('.channel-input').value;
       // send to server
-      fetch('http://localhost:3000/creators', {
+      await fetch('http://localhost:3000/creators', {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({channelName})
       })
+
+      loadCreators()
     }
 
     function newEl(type, attrs={}) {
@@ -47,14 +49,15 @@
       const creators = await res.json()
 
       // render creators
-      const ctr = document.querySelector('.container')
+      const container = document.querySelector('.container')
+      container.innerHTML=''
       creators.forEach( creator => {
         const card = newEl('div', {class: 'card'})
-        const title = newEl('h4', {innetText: creator.name})
-        const img = newEl('img', {src: creator.img})
+        const title = newEl('h4', {innerText: creator.channelName})
+        const img = newEl('img', {src: creator.avatarURL})
         card.appendChild(title)
         card.appendChild(img)
-        ctr.appendChild(card)
+        container.appendChild(card)
       })
     }
 
