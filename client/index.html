@@ -21,14 +21,14 @@
 
   <script>
     function submitChannel() {
-      const channelURL = document.querySelector('.channel-input').value;
+      const channelName = document.querySelector('.channel-input').value;
       // send to server
       fetch('http://localhost:3000/creators', {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({channelURL})
+        body: JSON.stringify({channelName})
       })
     }
 
