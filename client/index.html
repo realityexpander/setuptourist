@@ -20,6 +20,9 @@
   <div class="container"></div>
 
   <script>
+    // Initial load of creators
+    loadCreators()
+
     async function submitChannel() {
       const channelName = document.querySelector('.channel-input').value;
       // send to server
@@ -32,16 +35,6 @@
       })
 
       loadCreators()
-    }
-
-    function newEl(type, attrs={}) {
-      const el = document.createElement(type)
-      for (let attr in attrs) {
-        const value = attrs[attr]
-        if (attr == 'innerText') el.innerText = value;
-        else el.setAttribute(attr, value);
-      }
-      return el
     }
 
     async function loadCreators() {
@@ -61,21 +54,37 @@
       })
     }
 
-    // Initial load of creators 
-    loadCreators()
+    function newEl(type, attrs={}) {
+      const el = document.createElement(type)
+      for (let attr in attrs) {
+        const value = attrs[attr]
+        if (attr == 'innerText') el.innerText = value;
+        else el.setAttribute(attr, value);
+      }
+      return el
+    }
 
-    
   </script>
 
   <style>
     .container {
       display: flex;
     }
+    
     .card {
       margin: 5px;
       padding: 20px;
       background-color: white;
     }
+    
+    h4 {
+      margin-bottom: 5px;
+    }
+
+    .channel-input {
+      margin-bottom: 20px;
+    }
+
   </style>
   
 </body>

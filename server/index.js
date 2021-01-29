@@ -5,6 +5,7 @@ const port = 3000
 
 const bodyParser = require('body-parser');
 
+// Creator Database
 // const creators = []
 const creators = [
   {channelName: 'Code Drip', avatarURL: 'https://yt3.ggpht.com/ytc/AAUvwnhtuLAm0s8db-mA2fuTOBqrlWxWCJeJDZEc0bcONw=s88-c-k-c0x00ffffff-no-rj'},
