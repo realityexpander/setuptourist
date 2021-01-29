@@ -7,9 +7,24 @@
 </head>
 <body>
   <h1>Setup Tourist</h1>
+
+  <h4>Add a new creator</h4>
+  <input class="channel-input" type="text" placeholder="paste Youtube url"/>
+  <button 
+    type="submit"
+    onClick="submitChannel()"
+    >
+    submit
+  </button>
+
   <div class="container"></div>
 
   <script>
+    function submitChannel() {
+      const channelValue = document.querySelector('.channel-input').value;
+      // send to server
+    }
+
     function newEl(type, attrs={}) {
       const el = document.createElement(type)
       for (let attr in attrs) {
