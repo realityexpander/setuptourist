@@ -24,19 +24,39 @@
     loadCreators()
 
     async function submitChannel() {
-      const channelName = document.querySelector('.channel-input').value;
-      // send to server
-      const res = await fetch('http://localhost:3000/creators', {
-        method: 'POST', 
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({channelName})
-      })
-      let newCreator = await res.json()
+      const channelInput = document.querySelector('.channel-input')
+      const channelName = channelInput.value;
+      channelInput.value = ''
+      
 
-      console.log({newCreator})
-      addCreator(newCreator)
+      // // send to server (sync)
+      // const res = await fetch('http://localhost:3000/creators', {
+      //   method: 'POST', 
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({channelName})
+      // })
+      // let newCreator = await res.json()
+      // console.log({newCreator})
+      // addCreator(newCreator)
+
+      // send to server (async)
+      fetch('http://localhost:3000/newCreator', {
+          method: 'POST', 
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({channelName})
+        })
+      .then(res => {
+        return res.json()
+      })
+      .then(newCreator =>{
+        console.log({newCreator})
+        addCreator(newCreator)
+      })
+      
     }
 
     async function loadCreators() {
@@ -53,9 +73,9 @@
         })
       })
       
+      // get from server sync
       // const res = await fetch('http://localhost:3000/creators')
       // const creators = await res.json()
-      
     }
 
     function addCreator(creator) {

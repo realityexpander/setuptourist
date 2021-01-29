@@ -25,7 +25,7 @@ app.get('/creators', async (req, res) => {
   res.send(creators)
 })
 
-app.post('/creators', async (req, res) => {
+app.post('/newCreator', async (req, res) => {
   console.log("request:", req.body)
   // scrape channel
   const channelData = await scrapers.scrapeChannel(req.body.channelName)
