@@ -40,15 +40,22 @@
     }
 
     async function loadCreators() {
-      const res = await fetch('http://localhost:3000/creators', { method: 'GET'})
-      const creators = await res.json()
-
-      // render creators
-      const container = document.querySelector('.container')
-      container.innerHTML=''
-      creators.forEach( creator => {
-        addCreator(creator)
+      fetch('http://localhost:3000/creators')
+      .then(res =>{
+        return res.json()
       })
+      .then(creators => {
+        // render creators
+        const container = document.querySelector('.container')
+        container.innerHTML=''
+        creators.forEach( creator => {
+          addCreator(creator)
+        })
+      })
+      
+      // const res = await fetch('http://localhost:3000/creators')
+      // const creators = await res.json()
+      
     }
 
     function addCreator(creator) {
