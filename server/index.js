@@ -39,7 +39,6 @@ app.post('/creators', async (req, res) => {
       ytChannelUrl : channelData.ytChannelUrl, 
       ytChannelUrlName : req.body.ytChannelUrlName
     })
-
   } else {
     res.send({})
   }
