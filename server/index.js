@@ -4,9 +4,6 @@ const db = require('./db.js')
 const app = express();
 const port = 3000
 
-// const bodyParser = require('body-parser');
-// app.use(bodyParser.json())
-
 app.use(express.json())
 app.use(function(req, res, next){
     res.header("Access-Control-Allow-Origin", "*"); // disabled for security on local
