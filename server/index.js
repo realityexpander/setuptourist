@@ -1,19 +1,13 @@
 const express = require('express');
 const scrapers = require('./scrapers.js')
+const db = require('./db.js')
 const app = express();
 const port = 3000
 
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
+// app.use(bodyParser.json())
 
-// Creator Database
-// const creators = []
-const creators = [
-  {channelName: 'Code Drip', avatarURL: 'https://yt3.ggpht.com/ytc/AAUvwnhtuLAm0s8db-mA2fuTOBqrlWxWCJeJDZEc0bcONw=s88-c-k-c0x00ffffff-no-rj'},
-  {channelName: 'Nomad Capitalist', avatarURL: 'https://yt3.ggpht.com/ytc/AAUvwnhNnD05AILoIUArgd1ZHUpaNeEU27V8-h7lN7bq=s88-c-k-c0x00ffffff-no-rj'},
-  {channelName: 'RT', avatarURL: 'https://yt3.ggpht.com/ytc/AAUvwnijYqNxgVUKWqoGcecybqhx7rkYODHYyS0so06S4A=s88-c-k-c0x00ffffff-no-rj'},
-]
-
-app.use(bodyParser.json())
+app.use(express.json())
 app.use(function(req, res, next){
     res.header("Access-Control-Allow-Origin", "*"); // disabled for security on local
     res.header("Access-Control-Allow-Headers", "Content-Type");
@@ -21,22 +15,42 @@ app.use(function(req, res, next){
 })
 
 app.get('/creators', async (req, res) => {
-  // todo get from db
+  const creators = await db.getAllCreators()
+  console.log("GET:", creators)
   res.send(creators)
 })
 
-app.post('/newCreator', async (req, res) => {
-  console.log("request:", req.body)
+app.post('/creators', async (req, res) => {
+  console.log("POST:", req.body )
+
   // scrape channel
-  const channelData = await scrapers.scrapeChannel(req.body.channelName)
+  const channelData = await scrapers.scrapeChannel(req.body.ytChannelUrlName)
+
+  console.log({channelData})
 
   // add to db   
-  if (channelData.channelName !== undefined) {
-    creators.push(channelData)
+  if (!isEmpty(channelData)) {
+    await db.insertCreator( 
+      channelData.ytChannelName, 
+      channelData.ytImgUrl,
+      channelData.ytChannelUrl,  
+      req.body.ytChannelUrlName )
+
+    res.send({
+      ytChannelName : channelData.ytChannelName, 
+      ytImgUrl : channelData.ytImgUrl, 
+      ytChannelUrl : channelData.ytChannelUrl, 
+      ytChannelUrlName : req.body.ytChannelUrlName
+    })
+
+  } else {
+    res.send({})
   }
-  res.send(channelData) 
+
 })
 
 app.listen(port, () => {
   console.log(`Youtube Scraper app listening at http://localhost:${port}`)
 })
+
+function isEmpty(obj) { return (Object.keys(obj).length == 0) }

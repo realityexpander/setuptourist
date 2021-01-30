@@ -9,56 +9,54 @@
   <h1>Setup Tourist</h1>
 
   <h4>Add a new creator</h4>
-  <input class="channel-input" type="text" placeholder="paste Youtube channel name"/>
-  <button 
-    type="submit"
-    onClick="submitChannel()"
-    >
-    submit
-  </button>
+  <form id="channel-form">
+    <input class="channel-input" type="text" placeholder="Youtube channel URL name"/>
+    <button type="submit">submit</button>
+  </form>
 
   <div class="container"></div>
 
   <script>
+    let form = document.getElementById("channel-form")
+    form.addEventListener("submit", submitChannel, true)
+
     // Initial load of creators
     loadCreators()
 
-    async function submitChannel() {
-      const channelInput = document.querySelector('.channel-input')
-      const channelName = channelInput.value;
-      channelInput.value = ''
-      
+    async function submitChannel(event) {
+      event.preventDefault()
 
-      // // send to server (sync)
-      // const res = await fetch('http://localhost:3000/creators', {
-      //   method: 'POST', 
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({channelName})
-      // })
-      // let newCreator = await res.json()
-      // console.log({newCreator})
-      // addCreator(newCreator)
+      const ytChannelUrlNameInput = document.querySelector('.channel-input')
+      const ytChannelUrlName = ytChannelUrlNameInput.value;
+      ytChannelUrlNameInput.value = ''
 
-      // send to server (async)
-      fetch('http://localhost:3000/newCreator', {
+      console.log({ytChannelUrlName})
+
+      // POST new creator to server (async)
+      fetch('http://localhost:3000/creators', {
           method: 'POST', 
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({channelName})
-        })
+          body: JSON.stringify({ytChannelUrlName})
+      })
       .then(res => {
+        console.log("POST res:", res)
         return res.json()
       })
-      .then(newCreator =>{
-        console.log({newCreator})
-        addCreator(newCreator)
+      .then(newCreator => {
+        // console.log("POST newcreator:",newCreator)
+        if (!isEmpty(newCreator)) {
+          addCreator(newCreator)
+        }
       })
+      .catch(e => {
+        console.log({e})
+      }) 
       
     }
 
+    // GET all creators (async)
     async function loadCreators() {
       fetch('http://localhost:3000/creators')
       .then(res =>{
@@ -72,18 +70,18 @@
           addCreator(creator)
         })
       })
-      
-      // get from server sync
-      // const res = await fetch('http://localhost:3000/creators')
-      // const creators = await res.json()
+      .catch(e => {
+        console.log({e})
+      })  
     }
 
     function addCreator(creator) {
       const container = document.querySelector('.container')
+      // console.log("add creator", {creator})
 
       const card = newEl('div', {class: 'card'})
-      const title = newEl('h4', {innerText: creator.channelName})
-      const img = newEl('img', {src: creator.avatarURL})
+      const title = newEl('h4', {innerText: creator.ytChannelName})
+      const img = newEl('img', {src: creator.ytImgUrl})
       card.appendChild(title)
       card.appendChild(img)
       container.appendChild(card)
@@ -98,6 +96,8 @@
       }
       return el
     }
+    
+    function isEmpty(obj) { return (Object.keys(obj).length == 0) }
 
   </script>
 
@@ -109,7 +109,7 @@
     .card {
       margin: 5px;
       padding: 20px;
-      background-color: white;
+      background-color: rgba(72, 72, 100, 0.336);
     }
     
     h4 {
@@ -118,6 +118,7 @@
 
     .channel-input {
       margin-bottom: 20px;
+      width: 40%;
     }
 
   </style>
